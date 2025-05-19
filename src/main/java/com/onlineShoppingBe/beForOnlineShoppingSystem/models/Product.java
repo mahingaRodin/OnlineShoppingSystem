@@ -40,4 +40,53 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Purchased> purchases = new ArrayList<>();
+
+    public String getCode() {
+        return code;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getProductType() {
+        return productType;
+    }
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public LocalDate getInDate() {
+        return inDate;
+    }
+    public void setInDate(LocalDate inDate) {
+        this.inDate = inDate;
+    }
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String image) {
+        this.image = image;
+    }
+    public List<Quantity> getQuantities() {
+        return quantities;
+    }
+    public void setQuantities(List<Quantity> quantities) {
+        this.quantities = quantities;
+    }
+    public List<Purchased> getPurchases() {
+        return purchases;
+    }
+    public void setPurchases(List<Purchased> purchases) {
+        this.purchases = purchases;
+    }
 }
