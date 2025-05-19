@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements IProductService {
@@ -40,17 +41,20 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Quantity addQuantity(QuantityDTO quantityDTO) {
-        Product product = productRepo.findById(Long.valueOf(quantityDTO.getProductCode()))
-                .orElseThrow(()-> new RuntimeException("Product Not Found"));
+    public boolean addQuantity(QuantityDTO quantityDTO) {
+        Optional<Product> optionalProduct = productRepo.findById(quantityDTO.getId());
 
-        Quantity q = new Quantity();
-        q.setProduct(product);
-        q.setQuantity(quantityDTO.getQuantity());
-        q.setOperation(quantityDTO.getOperation());
-        q.setDate(LocalDateTime.now());
+      if(optionalProduct.isPresent()) {
+          Quantity q = new Quantity();
+          q.setProduct(optionalProduct.get());
+          q.setQuantity(quantityDTO.getQuantity());
+          q.setOperation(quantityDTO.getOperation());
+          q.setDate(LocalDateTime.now());
 
-        return quantityRepo.save(q);
+          return true;
+      }
+
+        return false;
     }
 
     @Override

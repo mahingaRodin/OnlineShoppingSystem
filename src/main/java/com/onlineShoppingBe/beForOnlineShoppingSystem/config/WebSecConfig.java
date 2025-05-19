@@ -10,6 +10,6 @@ public class WebSecConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public
+//    @Bean
+//    public
 }

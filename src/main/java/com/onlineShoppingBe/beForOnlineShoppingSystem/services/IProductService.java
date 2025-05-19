@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface IProductService {
     Product registerProduct(ProductDTO productDTO);
-    Quantity addQuantity(QuantityDTO quantityDTO);
+    boolean addQuantity(QuantityDTO quantityDTO);
     List<Product> getAllProducts();
 }

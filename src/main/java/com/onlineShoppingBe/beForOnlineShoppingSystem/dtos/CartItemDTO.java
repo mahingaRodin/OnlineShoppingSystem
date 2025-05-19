@@ -12,19 +12,24 @@ public class CartItemDTO {
     public Long getCustomerId() {
         return customerId;
     }
+
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+
     public Product getCode() {
         return code;
     }
-    public void setId(Product code) {
+
+    public void setCode(Product code) {
         this.code = code;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

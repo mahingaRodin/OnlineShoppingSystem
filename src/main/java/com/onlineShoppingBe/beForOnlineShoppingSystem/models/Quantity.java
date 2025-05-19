@@ -19,7 +19,7 @@ public class Quantity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_code", referencedColumnName = "code")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @Column(name = "quantity", nullable = false)
