@@ -1,12 +1,11 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.dtos;
 
-import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Product;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CartItemDTO {
     private Long customerId;
-    private Product code;
+    private String code;
     private int quantity;
 
     public Long getCustomerId() {
@@ -17,11 +16,11 @@ public class CartItemDTO {
         this.customerId = customerId;
     }
 
-    public Product getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Product code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

@@ -3,9 +3,7 @@ package com.onlineShoppingBe.beForOnlineShoppingSystem.controllers;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.ProductDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.QuantityDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Product;
-import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Quantity;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.services.IProductService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +29,8 @@ public class ProductController {
 
     // 2. Add quantity to product
     @PostMapping("/quantity")
-    public ResponseEntity<Quantity> addQuantity(@RequestBody QuantityDTO quantityDTO) {
-        Quantity quantity = productService.addQuantity(quantityDTO);
+    public ResponseEntity<?> addQuantity(@RequestBody QuantityDTO quantityDTO) {
+        boolean quantity = productService.addQuantity(quantityDTO);
         return new ResponseEntity<>(quantity, HttpStatus.CREATED);
     }
 
