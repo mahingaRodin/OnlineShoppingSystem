@@ -91,6 +91,7 @@ public class CustomerService {
         purchased.setProduct(product);
         purchased.setQuantity(purchaseDTO.getQuantity());
         purchased.setTotal(product.getPrice() * purchaseDTO.getQuantity());
+        purchased.setDate(LocalDateTime.now());
         purchased.setPurchaseDate(LocalDateTime.now());
 
         return purchaseRepo.save(purchased);
@@ -119,6 +120,7 @@ public class CustomerService {
                     purchased.setQuantity(item.getQuantity());
                     purchased.setTotal(item.getProduct().getPrice() * item.getQuantity());
                     purchased.setPurchaseDate(LocalDateTime.now());
+                    purchased.setDate(LocalDateTime.now());
                     return purchased;
                 })
                 .collect(Collectors.toList());
