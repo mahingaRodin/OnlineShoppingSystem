@@ -29,12 +29,13 @@ import java.util.List;
 @EnableWebSecurity
 public class WebSecConfig {
     private final UserService userService;
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public WebSecConfig(UserService userService, CustomAccessDeniedHandler accessDeniedHandler) {
+    public WebSecConfig(UserService userService, CustomAccessDeniedHandler accessDeniedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userService = userService;
         this.accessDeniedHandler = accessDeniedHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -81,4 +82,7 @@ public class WebSecConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {return  new BCryptPasswordEncoder();}
 }

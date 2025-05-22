@@ -13,7 +13,7 @@ import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.ICustomerRepo
 import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.IProductRepo;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.IPurchaseRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,16 +26,17 @@ public class CustomerService {
     private final ICustomerRepo customerRepo;
     private WebSecConfig passwordEncoder;
     private final IProductRepo productRepo;
-    private ICartItemRepo cartItemRepo;
-    private IPurchaseRepo purchaseRepo;
+    private final ICartItemRepo cartItemRepo;
+    private final IPurchaseRepo purchaseRepo;
 
     public CustomerService(
             IPurchaseRepo purchaseRepo,
-            IProductRepo productRepo, ICustomerRepo customerRepo
-            ) {
+            IProductRepo productRepo, ICustomerRepo customerRepo, ICartItemRepo cartItemRepo
+    ) {
         this.customerRepo = customerRepo;
-
+        this.cartItemRepo = cartItemRepo;
         this.productRepo = productRepo;
+        this.purchaseRepo = purchaseRepo;
     }
 
     public Customer registerCustomer(CustomerRegistrationDTO registrationDTO) {
@@ -47,7 +48,7 @@ public class CustomerService {
         customer.setFirstName(registrationDTO.getName());
         customer.setEmail(registrationDTO.getEmail());
         customer.setPhone(registrationDTO.getPhone());
-        customer.setPassword(passwordEncoder.passwordEncoder(registrationDTO.getPassword()).toString());
+        customer.setPassword(new BCryptPasswordEncoder().encode(registrationDTO.getPassword()));
 
         return customerRepo.save(customer);
     }
