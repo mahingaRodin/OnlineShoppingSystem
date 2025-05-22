@@ -1,4 +1,4 @@
-package com.hms.HotelServer.configs;
+package com.onlineShoppingBe.beForOnlineShoppingSystem.config;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
