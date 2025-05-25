@@ -26,13 +26,11 @@ public class Purchased {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "purchase_date")
     private LocalDateTime purchaseDate;
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -74,16 +72,18 @@ public class Purchased {
         this.date = date;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
+
     public LocalDateTime getPurchaseDate() {
         return purchaseDate;
     }
+
     public void setPurchaseDate(LocalDateTime purchaseDate) {
         this.purchaseDate = purchaseDate;
     }

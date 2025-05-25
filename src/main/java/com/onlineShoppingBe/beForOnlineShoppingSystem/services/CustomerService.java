@@ -2,10 +2,10 @@ package com.onlineShoppingBe.beForOnlineShoppingSystem.services;
 
 import com.onlineShoppingBe.beForOnlineShoppingSystem.config.WebSecConfig;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.CartItemDTO;
-import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.CustomerRegistrationDTO;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.UserDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.PurchaseDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.CartItem;
-import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Customer;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.models.User;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Product;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Purchased;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.ICartItemRepo;
@@ -39,31 +39,31 @@ public class CustomerService {
         this.purchaseRepo = purchaseRepo;
     }
 
-    public Customer registerCustomer(CustomerRegistrationDTO registrationDTO) {
+    public User registerCustomer(UserDTO registrationDTO) {
         if (customerRepo.findByEmail(registrationDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Email already registered");
         }
 
-        Customer customer = new Customer();
-        customer.setFirstName(registrationDTO.getName());
-        customer.setEmail(registrationDTO.getEmail());
-        customer.setPhone(registrationDTO.getPhone());
-        customer.setPassword(new BCryptPasswordEncoder().encode(registrationDTO.getPassword()));
+        User user = new User();
+        user.setName(registrationDTO.getName());
+        user.setEmail(registrationDTO.getEmail());
+        user.setPhone(registrationDTO.getPhone());
+        user.setPassword(new BCryptPasswordEncoder().encode(registrationDTO.getPassword()));
 
-        return customerRepo.save(customer);
+        return customerRepo.save(user);
     }
 
     // 2. Create cart/purchase line
     public CartItem addToCart(CartItemDTO cartItemDTO) {
-        Customer customer = customerRepo.findById(cartItemDTO.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        User user = customerRepo.findById(cartItemDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Product product = productRepo.findById(cartItemDTO.getCustomerId())
+        Product product = productRepo.findById(cartItemDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         // Check if item already in cart
         Optional<CartItem> existingItem = cartItemRepo.findById(
-                customer.getId());
+                user.getId());
 
         if (existingItem.isPresent()) {
             CartItem item = existingItem.get();
@@ -71,7 +71,7 @@ public class CustomerService {
             return cartItemRepo.save(item);
         } else {
             CartItem newItem = new CartItem();
-            newItem.setCustomer(customer);
+            newItem.setUser(user);
             newItem.setProduct(product);
             newItem.setQuantity(cartItemDTO.getQuantity());
             return cartItemRepo.save(newItem);
@@ -80,14 +80,14 @@ public class CustomerService {
 
     // 3. Buy product directly
     public Purchased buyProduct(PurchaseDTO purchaseDTO) {
-        Customer customer = customerRepo.findByEmail(purchaseDTO.getCustomerEmail())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        User user = customerRepo.findByEmail(purchaseDTO.getUserEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Product product = (Product) productRepo.findByCode(purchaseDTO.getCode())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Purchased purchased = new Purchased();
-        purchased.setCustomer(customer);
+        purchased.setUser(user);
         purchased.setProduct(product);
         purchased.setQuantity(purchaseDTO.getQuantity());
         purchased.setTotal(product.getPrice() * purchaseDTO.getQuantity());
@@ -107,15 +107,15 @@ public class CustomerService {
     // 5. Checkout (convert cart to purchases)
     @Transactional
     public List<Purchased> checkout(Long customerId) {
-        Customer customer = customerRepo.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        User user = customerRepo.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<CartItem> cartItems = cartItemRepo.findByCustomerId(customerId);
+        List<CartItem> cartItems = cartItemRepo.findByUserId(customerId);
 
         List<Purchased> purchases = cartItems.stream()
                 .map(item -> {
                     Purchased purchased = new Purchased();
-                    purchased.setCustomer(customer);
+                    purchased.setUser(user);
                     purchased.setProduct(item.getProduct());
                     purchased.setQuantity(item.getQuantity());
                     purchased.setTotal(item.getProduct().getPrice() * item.getQuantity());
@@ -126,7 +126,7 @@ public class CustomerService {
                 .collect(Collectors.toList());
 
         purchaseRepo.saveAll(purchases);
-        cartItemRepo.deleteByCustomerId(customerId);
+        cartItemRepo.deleteByUserId(customerId);
 
         return purchases;
     }

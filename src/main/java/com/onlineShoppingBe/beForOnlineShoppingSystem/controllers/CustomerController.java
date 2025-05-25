@@ -1,10 +1,10 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.controllers;
 
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.CartItemDTO;
-import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.CustomerRegistrationDTO;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.UserDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.PurchaseDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.CartItem;
-import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Customer;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.models.User;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Purchased;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.services.CustomerService;
 import org.springframework.http.HttpStatus;
@@ -24,9 +24,9 @@ public class CustomerController {
 
     // 1. Register customer
     @PostMapping("/register")
-    public ResponseEntity<Customer> registerCustomer(@RequestBody CustomerRegistrationDTO registrationDTO) {
-        Customer customer = customerService.registerCustomer(registrationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+    public ResponseEntity<User> registerCustomer(@RequestBody UserDTO registrationDTO) {
+        User user = customerService.registerCustomer(registrationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     // 2. Add to cart

@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class CartItemDTO {
-    private Long customerId;
+    private Long userId;
     private String code;
     private int quantity;
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getCode() {

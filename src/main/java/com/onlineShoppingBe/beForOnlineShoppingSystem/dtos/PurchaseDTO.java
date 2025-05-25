@@ -1,16 +1,16 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.dtos;
 
 public class PurchaseDTO {
-    private String customerEmail;
+    private String userEmail;
     private String code;
     private int quantity;
 
-    public String getCustomerEmail() {
-        return customerEmail;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getCode() {

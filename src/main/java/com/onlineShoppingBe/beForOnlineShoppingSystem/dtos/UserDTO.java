@@ -1,10 +1,21 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.dtos;
 
+import com.onlineShoppingBe.beForOnlineShoppingSystem.enums.UserRole;
+
 public class UserDTO {
+    private Long id;
     private String name;
     private String email;
     private String phone;
+    private UserRole role;
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -28,6 +39,13 @@ public class UserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getPassword() {

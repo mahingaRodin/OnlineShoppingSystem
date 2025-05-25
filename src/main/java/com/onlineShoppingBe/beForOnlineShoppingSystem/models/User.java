@@ -1,20 +1,22 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.models;
 
+import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.UserDTO;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstname", nullable = false)
-    private String firstName;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "phone")
     private String phone;
@@ -22,16 +24,17 @@ public class Customer {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "role")
+    private UserRole role;
+
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Purchased> purchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CartItem> cartItems = new ArrayList<>();
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -41,12 +44,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -63,6 +66,14 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getPassword() {
@@ -87,5 +98,15 @@ public class Customer {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+
+    public UserDTO getUserDTO() {
+        UserDTO dto = new UserDTO();
+        dto.setId(id);
+        dto.setName(name);
+        dto.setEmail(email);
+        dto.setRole(role);
+        return dto;
     }
 }

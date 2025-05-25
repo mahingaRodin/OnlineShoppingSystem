@@ -1,10 +1,10 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.repositories;
 
-import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Customer;
+import com.onlineShoppingBe.beForOnlineShoppingSystem.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ICustomerRepo extends JpaRepository<Customer, Long> {
-    Optional<Customer> findByEmail(String email);
+public interface ICustomerRepo extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
 }

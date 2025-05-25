@@ -1,5 +1,6 @@
 package com.onlineShoppingBe.beForOnlineShoppingSystem.config;
 
+import com.onlineShoppingBe.beForOnlineShoppingSystem.enums.UserRole;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.security.JwtAuthenticationFilter;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.util.UserService;
 import org.springframework.context.annotation.Bean;
@@ -38,14 +39,17 @@ public class WebSecConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/products/**").permitAll()
-                                .requestMatchers("/api/customers/**").permitAll()
+                        request.requestMatchers("/api/products/**").hasAnyAuthority(UserRole.ADMIN.name())
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/customers/**").hasAnyAuthority(UserRole.CUSTOMER.name())
+                                .requestMatchers("OPTIONS/**").permitAll()
                                 .anyRequest().authenticated()
                         )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -74,10 +78,12 @@ public class WebSecConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+        configuration.setExposedHeaders(List.of("Authorization")); // Expose Authorization header if needed
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache preflight for 1 hour
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
