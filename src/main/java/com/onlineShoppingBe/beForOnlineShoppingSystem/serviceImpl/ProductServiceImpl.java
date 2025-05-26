@@ -9,6 +9,7 @@ import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.IQuantityRepo
 import com.onlineShoppingBe.beForOnlineShoppingSystem.services.IProductService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements IProductService {
         p.setName(productDTO.getName());
         p.setProductType(productDTO.getProductType());
         p.setPrice(productDTO.getPrice());
-        p.setInDate(productDTO.getInDate());
+        p.setInDate(LocalDate.now());
         p.setImage(productDTO.getImage());
 
         return productRepo.save(p);

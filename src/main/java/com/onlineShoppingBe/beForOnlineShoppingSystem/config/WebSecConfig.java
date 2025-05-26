@@ -23,7 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -46,7 +45,7 @@ public class WebSecConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/products/**").hasAnyAuthority(UserRole.ADMIN.name())
+                        request.requestMatchers("/api/products/**").hasRole("ADMIN")
                                 .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/customers/**").hasAnyAuthority(UserRole.CUSTOMER.name())
                                 .requestMatchers("OPTIONS/**").permitAll()

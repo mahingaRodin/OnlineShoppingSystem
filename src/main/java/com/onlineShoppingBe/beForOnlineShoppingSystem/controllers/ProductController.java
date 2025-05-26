@@ -6,11 +6,13 @@ import com.onlineShoppingBe.beForOnlineShoppingSystem.models.Product;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.services.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/api/products")
 public class ProductController {
 

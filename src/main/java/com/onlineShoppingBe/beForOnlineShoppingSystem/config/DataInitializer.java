@@ -5,7 +5,9 @@ import com.onlineShoppingBe.beForOnlineShoppingSystem.models.User;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.repositories.IUserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DataInitializer implements CommandLineRunner {
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

@@ -3,13 +3,18 @@ package com.onlineShoppingBe.beForOnlineShoppingSystem.models;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.dtos.UserDTO;
 import com.onlineShoppingBe.beForOnlineShoppingSystem.enums.UserRole;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +30,7 @@ public class User {
     private String email;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column(name = "password", nullable = false)
@@ -76,8 +82,38 @@ public class User {
         this.role = role;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -106,7 +142,9 @@ public class User {
         dto.setId(id);
         dto.setName(name);
         dto.setEmail(email);
-        dto.setRole(role);
+        dto.setPhone(phone);
+        dto.setRole(UserRole.CUSTOMER);
+        dto.setPassword(new BCryptPasswordEncoder().encode(password));
         return dto;
     }
 }
